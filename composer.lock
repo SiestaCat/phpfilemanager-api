@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b01a0be1c482ba1454ac05bbb7fd7856",
+    "content-hash": "b354ed6df2dc012ed449157702a89258",
     "packages": [
         {
             "name": "psr/cache",
@@ -207,6 +207,47 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
             "time": "2021-07-14T16:46:02+00:00"
+        },
+        {
+            "name": "siestacat/phpfilemanager",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SiestaCat/phpfilemanager.git",
+                "reference": "137b977b8685e616258487eca9f0c6cf6c37a649"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SiestaCat/phpfilemanager/zipball/137b977b8685e616258487eca9f0c6cf6c37a649",
+                "reference": "137b977b8685e616258487eca9f0c6cf6c37a649",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Siestacat\\Phpfilemanager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "SiestaCat"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/SiestaCat/phpfilemanager/issues",
+                "source": "https://github.com/SiestaCat/phpfilemanager/tree/1.0.0"
+            },
+            "time": "2023-06-11T10:01:21+00:00"
         },
         {
             "name": "symfony/cache",
