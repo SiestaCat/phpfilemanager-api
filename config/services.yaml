@@ -22,3 +22,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\FileManagerService:
+        arguments:
+            $data_dir: '%env(string:DATA_DIR)%'
+    App\Api\Credentials:
+        arguments:
+            $apikey_readonly: '%env(string:APIKEY_READONLY)%'
+            $apikey_write: '%env(string:APIKEY_WRITE)%'
