@@ -210,16 +210,16 @@
         },
         {
             "name": "siestacat/phpfilemanager",
-            "version": "1.0.0",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SiestaCat/phpfilemanager.git",
-                "reference": "137b977b8685e616258487eca9f0c6cf6c37a649"
+                "reference": "b881d3a9b48a0cc72885acc9c9088271c3414627"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SiestaCat/phpfilemanager/zipball/137b977b8685e616258487eca9f0c6cf6c37a649",
-                "reference": "137b977b8685e616258487eca9f0c6cf6c37a649",
+                "url": "https://api.github.com/repos/SiestaCat/phpfilemanager/zipball/b881d3a9b48a0cc72885acc9c9088271c3414627",
+                "reference": "b881d3a9b48a0cc72885acc9c9088271c3414627",
                 "shasum": ""
             },
             "require": {
@@ -245,9 +245,9 @@
             ],
             "support": {
                 "issues": "https://github.com/SiestaCat/phpfilemanager/issues",
-                "source": "https://github.com/SiestaCat/phpfilemanager/tree/1.0.0"
+                "source": "https://github.com/SiestaCat/phpfilemanager/tree/1.0.4"
             },
-            "time": "2023-06-11T10:01:21+00:00"
+            "time": "2023-06-11T18:31:56+00:00"
         },
         {
             "name": "symfony/cache",

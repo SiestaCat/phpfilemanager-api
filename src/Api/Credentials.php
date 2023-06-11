@@ -5,6 +5,10 @@ namespace App\Api;
 
 class Credentials
 {
+
+    const APIKEY_READONLY   = 1;
+    const APIKEY_WRITE      = 2;
+
     public function __construct(private string $apikey_readonly, private string $apikey_write)
     {}
 

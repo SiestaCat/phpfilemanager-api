@@ -29,14 +29,7 @@ class FileManagerService
             $data_dir
         ;
 
-        $realpath = realpath($data_dir);
-
-        if($realpath === false && !mkdir($data_dir, 0777, true))
-        {
-            throw new \Exception('Unable to create data dir "' . dirname($data_dir) . '"');
-        }
-
-        $abs_data_path = $realpath;
+        $abs_data_path = $data_dir;
 
         //Init file commander
 
