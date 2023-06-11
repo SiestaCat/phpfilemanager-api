@@ -3,16 +3,20 @@
 namespace App;
 
 use Symfony\Component\HttpKernel\KernelInterface;
+use Siestacat\Phpfilemanager\File\Repository\Adapter\FileSystemAdapter;
+use Siestacat\Phpfilemanager\File\FileCommander;
 
 class FileManagerService
 {
 
     const DEFAULT_DATA_DIR_ABS_PATH = 'data';
 
-    private string $abs_data_path;
+    private FileCommander $fileCommander;
 
     public function __construct(?string $data_dir, KernelInterface $kernel)
     {
+
+        //Define data dir
 
         $data_dir
         =
@@ -32,6 +36,18 @@ class FileManagerService
             throw new \Exception('Unable to create data dir "' . dirname($data_dir) . '"');
         }
 
-        $this->abs_data_path = $realpath;
+        $abs_data_path = $realpath;
+
+        //Init file commander
+
+        $this->fileCommander = new FileCommander
+        (
+            new FileSystemAdapter($abs_data_path)
+        );
+    }
+
+    public function getFileCommander():FileCommander
+    {
+        return $this->fileCommander;
     }
 }
