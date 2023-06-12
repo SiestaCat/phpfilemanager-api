@@ -10,6 +10,7 @@
 ###< symfony/framework-bundle ###
 /.history/
 /data/
+/data_test/
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
