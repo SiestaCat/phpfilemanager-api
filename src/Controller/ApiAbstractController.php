@@ -36,14 +36,27 @@ class ApiAbstractController extends AbstractController
 
         $apikey = $request->request->get('apikey');
 
+        $status = false;
+
         switch($apikey_type)
         {
             case Credentials::APIKEY_READONLY:
-                return $apikey === $_ENV['APIKEY_READONLY'] || $apikey === $_ENV['APIKEY_WRITE'];
+                $status = $apikey === $_ENV['APIKEY_READONLY'] || $apikey === $_ENV['APIKEY_WRITE'];
+                break;
             case Credentials::APIKEY_WRITE:
-                return $apikey === $_ENV['APIKEY_WRITE'];
+                $status = $apikey === $_ENV['APIKEY_WRITE'];
+                break;
         }
 
-        return false;
+        if(!$status && $this->getParameter('kernel.environment') === 'prod')
+        {
+            if(rand(1,2) === 1)
+            {
+                usleep(rand(1000,100000));
+                sleep(rand(1,2));
+            }
+        }
+
+        return $status;
     }
 }
