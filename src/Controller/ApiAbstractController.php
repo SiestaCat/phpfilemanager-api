@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiAbstractController extends AbstractController
 {
 
+    const ACCESS_DENIED_ERROR_MSG = 'Access denied';
+    const NO_FILES_PROVIDED_ERROR_MSG = 'No files provided';
+
     protected $json_data = ['success' => false];
 
     protected function json_error(?\Exception $e = null, bool $show_error_always = false):JsonResponse
@@ -26,7 +29,12 @@ class ApiAbstractController extends AbstractController
 
     protected function json_error_access_denied():JsonResponse
     {
-        return $this->json_error(new \Exception('Access denied'), true);
+        return $this->json_error(new \Exception(self::ACCESS_DENIED_ERROR_MSG), true);
+    }
+
+    protected function json_error_no_files_provided():JsonResponse
+    {
+        return $this->json_error(new \Exception(self::NO_FILES_PROVIDED_ERROR_MSG), true);
     }
 
     protected function checkApiKey(Request $request, int $apikey_type):bool

@@ -81,4 +81,16 @@ class ApiTestCase extends WebTestCase
 
         return $file_manager_service->getFileCommander();
     }
+
+    protected function assertJsonErrorMessage(\stdClass $json, string $message):void
+    {
+        $property_error_exists = property_exists($json, 'error');
+
+        $this->assertTrue($property_error_exists);
+
+        if($property_error_exists)
+        {
+            $this->assertEquals($json->error, $message);
+        }
+    }
 }
