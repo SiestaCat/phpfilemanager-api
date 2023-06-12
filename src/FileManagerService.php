@@ -26,7 +26,13 @@ class FileManagerService
         ?
             $kernel->getProjectDir() . '/' . self::DEFAULT_DATA_DIR_ABS_PATH
         :
-            $data_dir
+            (
+                substr($data_dir,0,1) === '.'
+                ?
+                $kernel->getProjectDir() . '/' . $data_dir
+                :
+                $data_dir
+            )
         ;
 
         $abs_data_path = $data_dir;

@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApiAbstractController extends AbstractController
 {
+
+    const ACCESS_DENIED_ERROR_MSG = 'Access denied';
+
     protected $json_data = ['success' => false];
 
     protected function json_error(?\Exception $e = null, bool $show_error_always = false):JsonResponse
@@ -21,6 +24,11 @@ class ApiAbstractController extends AbstractController
         $this->json_data['success'] = false;
 
         return $this->json($this->json_data);
+    }
+
+    protected function json_error_access_denied():JsonResponse
+    {
+        return $this->json_error(new \Exception(self::ACCESS_DENIED_ERROR_MSG), true);
     }
 
     protected function checkApiKey(Request $request, int $apikey_type):bool

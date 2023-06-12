@@ -6,14 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiUploadAbstractController extends ApiAbstractController
 {
-
-    const ACCESS_DENIED_ERROR_MSG = 'Access denied';
     const NO_FILES_PROVIDED_ERROR_MSG = 'No files provided';
-
-    protected function json_error_access_denied():JsonResponse
-    {
-        return $this->json_error(new \Exception(self::ACCESS_DENIED_ERROR_MSG), true);
-    }
 
     protected function json_error_no_files_provided():JsonResponse
     {

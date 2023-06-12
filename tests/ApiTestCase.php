@@ -8,9 +8,12 @@ use Siestacat\Phpfilemanager\File\FileCommander;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpKernel\HttpKernelBrowser;
 
 class ApiTestCase extends WebTestCase
 {
+
+    private ?HttpKernelBrowser $browser_cient = null;
 
     const SUCCESS_STATUS_PROP = 'success';
 
@@ -40,7 +43,7 @@ class ApiTestCase extends WebTestCase
         return __DIR__ . '/upload_files/' . $filename;
     }
 
-    protected function getJson(KernelBrowser $client, bool $assert_success_status = false):?\stdClass
+    protected function getJson(KernelBrowser $client, bool $assert_success_status = false, array $properties_exists_assert = []):?\stdClass
     {
         $json = json_decode($client->getResponse()->getContent(), false);
 
@@ -48,7 +51,15 @@ class ApiTestCase extends WebTestCase
 
         $json = is_object($json) ? $json : null;
 
-        if($assert_success_status) $this->assertApiSuccess($json);
+        if($assert_success_status)
+        {
+            $this->assertApiSuccess($json);
+
+            foreach($properties_exists_assert as $property_name)
+            {
+                $this->assertTrue(property_exists($json, $property_name), sprintf('Property "%s" not exists in json', $property_name));
+            }
+        }
 
         return $json;
     }
@@ -70,9 +81,21 @@ class ApiTestCase extends WebTestCase
         $this->assertTrue($success_status, 'Api success status');
     }
 
+    protected function _bootKernel():void
+    {
+        if(self::$booted) return;
+        static::bootKernel();
+    }
+
+    protected function _createClient():HttpKernelBrowser
+    {
+        $this->browser_cient = $this->browser_cient === null ? static::createClient() : $this->browser_cient;
+        return $this->browser_cient;
+    }
+
     protected function getFileCommander():FileCommander
     {
-        static::bootKernel();
+        self::_bootKernel();
 
         /**
          * @var FileManagerService
@@ -92,5 +115,59 @@ class ApiTestCase extends WebTestCase
         {
             $this->assertEquals($json->error, $message);
         }
+    }
+
+    protected function doUploadSingleFile(): string
+    {
+
+        $json = $this->testUploadMultipleFilesAbstract(['image.jpg']);
+
+        $this->assertJsonUploadedFiles($json);
+
+        return $json->files[0]->hash;
+    }
+
+    protected function assertJsonUploadedFiles(\stdClass $json): void
+    {
+
+        $fileCommander = $this->getFileCommander();
+
+        foreach($json->files as $file)
+        {
+            $hash = $fileCommander->hash_file
+            (
+                $this->getUploadFilePath($file->filename)
+            );
+
+            $this->assertEquals
+            (
+                $hash,
+                $file->hash,
+                sprintf('Filename "%s" hash', $file->filename)
+            );
+        }
+    }
+
+    protected function testUploadMultipleFilesAbstract(array $filesnames = [], int $apikey_type = Credentials::APIKEY_WRITE, bool $assert_success_status = true):?\stdClass
+    {
+        $files = [];
+
+        foreach($filesnames as $filename)
+        {
+            $files[] = $this->uploadFile($filename);
+        }
+
+        $client = $this->_createClient();
+        $client->request('PUT', '/upload', $this->getApiKeyParameters($apikey_type), $files);
+        
+        return $this->getJson($client, $assert_success_status, ['files']);
+    }
+
+    protected function testDeleteAbstract(array $hashes = [], int $apikey_type = Credentials::APIKEY_WRITE, bool $assert_success_status = true):?\stdClass
+    {
+        $client = $this->_createClient();
+        $client->request('DELETE', '/delete', $this->getApiKeyParameters($apikey_type, ['hashes' => $hashes]));
+        
+        return $this->getJson($client, $assert_success_status, ['deleted_hashes']);
     }
 }
