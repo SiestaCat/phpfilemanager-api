@@ -191,7 +191,7 @@ class ApiTestCase extends WebTestCase
         }
 
         $client = $this->_createClient();
-        $client->request('PUT', '/upload', $this->getApiKeyParameters($apikey_type), $files);
+        $client->request('POST', '/upload', $this->getApiKeyParameters($apikey_type), $files);
         
         return $this->getJson($client, $assert_success_status, ['files']);
     }

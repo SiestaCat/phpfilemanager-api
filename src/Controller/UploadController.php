@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadController extends ApiUploadAbstractController
 {
-    #[Route('/upload', name: 'app_upload', methods: ['PUT'])]
+    #[Route('/upload', name: 'app_upload', methods: ['POST'])]
     public function index(FileManagerService $fileManagerService, Request $request): JsonResponse
     {
 
