@@ -87,7 +87,7 @@ class ApiTestCase extends WebTestCase
             if($success_property_exists) $success_status = $json->{self::SUCCESS_STATUS_PROP};
         }
 
-        $this->assertTrue(!$success_status, 'Api success status');
+        $this->assertTrue($success_status, 'Api success status');
     }
 
     protected function _bootKernel():void
