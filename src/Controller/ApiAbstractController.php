@@ -28,7 +28,7 @@ class ApiAbstractController extends AbstractController
 
     protected function json_error_access_denied():JsonResponse
     {
-        return $this->json_error(new \Exception(self::ACCESS_DENIED_ERROR_MSG), true);
+        return $this->json_error(new \Exception(self::ACCESS_DENIED_ERROR_MSG), true)->setStatusCode(403);
     }
 
     protected function checkApiKey(Request $request, int $apikey_type):bool
