@@ -34,7 +34,7 @@ class ApiAbstractController extends AbstractController
     protected function checkApiKey(Request $request, int $apikey_type):bool
     {
 
-        $apikey = $request->request->get('apikey');
+        $apikey = $request->getMethod() === 'GET' ? $request->query->get('apikey') : $request->request->get('apikey');
 
         $status = false;
 

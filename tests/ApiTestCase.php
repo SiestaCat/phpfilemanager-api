@@ -8,6 +8,7 @@ use Siestacat\Phpfilemanager\File\FileCommander;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelBrowser;
 
 class ApiTestCase extends WebTestCase
@@ -17,8 +18,16 @@ class ApiTestCase extends WebTestCase
 
     const SUCCESS_STATUS_PROP = 'success';
 
-    protected function getApiKeyParameters(int $apikey_type, array $parameters = [])
+    protected function getApiKeyParameters(int $apikey_type, array $parameters = [], ?string $apikey = null)
     {
+
+
+        if($apikey !== null)
+        {
+            $parameters['apikey'] = $apikey;
+
+            return $parameters;
+        }
 
         switch($apikey_type)
         {
@@ -38,7 +47,7 @@ class ApiTestCase extends WebTestCase
         return new UploadedFile($this->getUploadFilePath($filename), $filename);
     }
 
-    protected function getUploadFilePath(string $filename):string
+    protected function getUploadFilePath(?string $filename = null):string
     {
         return __DIR__ . '/upload_files/' . $filename;
     }
@@ -120,11 +129,35 @@ class ApiTestCase extends WebTestCase
     protected function doUploadSingleFile(): string
     {
 
-        $json = $this->testUploadMultipleFilesAbstract(['image.jpg']);
+        $json = $this->testUploadMultipleFilesAbstract([$this->getSampleFilesList()[0]]);
 
         $this->assertJsonUploadedFiles($json);
 
         return $json->files[0]->hash;
+    }
+
+    protected function doUploadMultipleFiles(): array
+    {
+
+        $json = $this->testUploadMultipleFilesAbstract($this->getSampleFilesList());
+
+        $this->assertJsonUploadedFiles($json);
+
+        return $json->files;
+    }
+
+    private function getSampleFilesList():array
+    {
+        $files = [];
+
+        foreach(scandir($this->getUploadFilePath()) as $filename)
+        {
+            if(in_array($filename, ['.', '..'])) continue;
+
+            $files[] = $filename;
+        }
+
+        return $files;
     }
 
     protected function assertJsonUploadedFiles(\stdClass $json): void
@@ -169,5 +202,24 @@ class ApiTestCase extends WebTestCase
         $client->request('DELETE', '/delete', $this->getApiKeyParameters($apikey_type, ['hashes' => $hashes]));
         
         return $this->getJson($client, $assert_success_status, ['deleted_hashes']);
+    }
+
+    protected function testExistsAbstract(string $hash, int $apikey_type = Credentials::APIKEY_READONLY, bool $assert_success_status = true, ?string $apikey = null):?\stdClass
+    {
+        $client = $this->_createClient();
+        $client->request('GET', '/exists/' . $hash, $this->getApiKeyParameters($apikey_type, [], $apikey));
+        
+        return $this->getJson($client, $assert_success_status, ['exists']);
+    }
+
+    protected function testGetAbstract(string $hash, int $apikey_type = Credentials::APIKEY_READONLY, ?string $apikey = null):Response
+    {
+        $client = $this->_createClient();
+        $client->request('GET', '/get/' . $hash, $this->getApiKeyParameters($apikey_type, [], $apikey));
+
+        $client->getInternalResponse()->getContent();
+
+        return $client->getResponse();
+        
     }
 }

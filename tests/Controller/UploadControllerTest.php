@@ -13,7 +13,9 @@ class UploadControllerTest extends ApiTestCase
 {
     public function testUploadSingleFile(): void
     {
-        $this->doUploadSingleFile();
+        $hash = $this->doUploadSingleFile();
+
+        $this->testDeleteAbstract([$hash]);
     }
 
     public function testErrorAccessDenied(): void
@@ -31,7 +33,4 @@ class UploadControllerTest extends ApiTestCase
 
         $this->assertJsonErrorMessage($json, ApiUploadAbstractController::NO_FILES_PROVIDED_ERROR_MSG);
     }
-
-    
-    
 }

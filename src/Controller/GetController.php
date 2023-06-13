@@ -16,7 +16,7 @@ class GetController extends ApiAbstractController
     public function index(string $hash, FileManagerService $fileManagerService, Request $request): Response
     {
 
-        if(!$this->checkApiKey($request, Credentials::APIKEY_READONLY)) return new Response('Invalid apikey for this purpose', 403);
+        if(!$this->checkApiKey($request, Credentials::APIKEY_READONLY)) return new Response('Invalid apikey', 403);
 
         try
         {
