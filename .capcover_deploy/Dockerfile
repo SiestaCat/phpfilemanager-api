@@ -33,6 +33,7 @@ RUN addgroup $NON_ROOT_USER wheel
 
 # Switch to non-root 'app' user & install app dependencies
 COPY composer.json composer.lock ./
+RUN mkdir $APP_PATH/data
 RUN chown -R $NON_ROOT_USER:$NON_ROOT_GROUP $APP_PATH
 USER $NON_ROOT_USER
 RUN composer install --no-scripts
