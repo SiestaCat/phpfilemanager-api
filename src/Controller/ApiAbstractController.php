@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiAbstractController extends AbstractController
 {
 
+    protected ?string $apikey = null;
+
     const ACCESS_DENIED_ERROR_MSG = 'Access denied';
 
     protected $json_data = ['success' => false];
@@ -31,23 +33,28 @@ class ApiAbstractController extends AbstractController
         return $this->json_error(new \Exception(self::ACCESS_DENIED_ERROR_MSG), true)->setStatusCode(403);
     }
 
+    private function setApiKeyFromRequest(Request $request):void
+    {
+        $this->apikey = $request->query->get('apikey');
+
+        $this->apikey = $this->apikey === null ? $request->request->get('apikey') : $this->apikey;
+    }
+
     protected function checkApiKey(Request $request, int $apikey_type):bool
     {
-        $apikey = $request->query->get('apikey');
+        $this->setApiKeyFromRequest($request);
 
-        $apikey = $apikey === null ? $request->request->get('apikey') : $apikey;
-
-        if($apikey === null) return false;
+        if($this->apikey === null) return false;
 
         $status = false;
 
         switch($apikey_type)
         {
             case Credentials::APIKEY_READONLY:
-                $status = $apikey === $_ENV['APIKEY_READONLY'] || $apikey === $_ENV['APIKEY_WRITE'];
+                $status = $this->apikey === $_ENV['APIKEY_READONLY'] || $this->apikey === $_ENV['APIKEY_WRITE'];
                 break;
             case Credentials::APIKEY_WRITE:
-                $status = $apikey === $_ENV['APIKEY_WRITE'];
+                $status = $this->apikey === $_ENV['APIKEY_WRITE'];
                 break;
         }
 

@@ -40,6 +40,6 @@ class ListController extends ApiAbstractController
 
     private function getNextPrevUrl(int $page, int $page_limit, bool $next):?string
     {
-        return (!$next && $page > 1) || $next ? $this->generateUrl($this->container->get('request_stack')->getCurrentRequest()->get('_route'), ['page' => ($next ? $page+1 : $page-1), 'page_limit' => $page_limit], UrlGeneratorInterface::ABSOLUTE_URL) : null;
+        return (!$next && $page > 1) || $next ? $this->generateUrl($this->container->get('request_stack')->getCurrentRequest()->get('_route'), ['page' => ($next ? $page+1 : $page-1), 'page_limit' => $page_limit, 'apikey' => $this->apikey], UrlGeneratorInterface::ABSOLUTE_URL) : null;
     }
 }
