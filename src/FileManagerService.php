@@ -5,6 +5,7 @@ namespace App;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Siestacat\Phpfilemanager\File\Repository\Adapter\FileSystemAdapter;
 use Siestacat\Phpfilemanager\File\FileCommander;
+use Siestacat\Phpfilemanager\File\Repository\AdapterInterface;
 
 class FileManagerService
 {
@@ -48,5 +49,15 @@ class FileManagerService
     public function getFileCommander():FileCommander
     {
         return $this->fileCommander;
+    }
+
+    public function list(int $page = 1, int $page_limit = AdapterInterface::DEFAULT_PAGE_LIMIT):array
+    {
+
+        $hashes = [];
+
+        foreach($this->getFileCommander()->list($page, $page_limit) as $file) $hashes[] = $file->getHash();
+
+        return $hashes;
     }
 }

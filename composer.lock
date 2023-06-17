@@ -252,16 +252,16 @@
         },
         {
             "name": "siestacat/phpfilemanager",
-            "version": "1.0.9",
+            "version": "1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SiestaCat/phpfilemanager.git",
-                "reference": "8142a70bd004a5b4fab8b1d3b9284280f6228da4"
+                "reference": "7cca40da4eaa44d2408a8e285bf949c1beb19cf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SiestaCat/phpfilemanager/zipball/8142a70bd004a5b4fab8b1d3b9284280f6228da4",
-                "reference": "8142a70bd004a5b4fab8b1d3b9284280f6228da4",
+                "url": "https://api.github.com/repos/SiestaCat/phpfilemanager/zipball/7cca40da4eaa44d2408a8e285bf949c1beb19cf5",
+                "reference": "7cca40da4eaa44d2408a8e285bf949c1beb19cf5",
                 "shasum": ""
             },
             "require": {
@@ -289,9 +289,9 @@
             "description": "File manager library. Manage files by hash",
             "support": {
                 "issues": "https://github.com/SiestaCat/phpfilemanager/issues",
-                "source": "https://github.com/SiestaCat/phpfilemanager/tree/1.0.9"
+                "source": "https://github.com/SiestaCat/phpfilemanager/tree/1.0.10"
             },
-            "time": "2023-06-17T10:14:30+00:00"
+            "time": "2023-06-17T10:22:39+00:00"
         },
         {
             "name": "symfony/cache",
