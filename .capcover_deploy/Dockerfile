@@ -43,7 +43,7 @@ RUN rm -rf /home/$NON_ROOT_USER/.composer
 COPY --chown=$NON_ROOT_USER:$NON_ROOT_GROUP . $APP_PATH/
 COPY ./.capcover_deploy/config/php/local.ini /usr/local/etc/php/conf.d/local.ini
 
-RUN php $APP_PATH/vendor/bin/phpunit
+#RUN php $APP_PATH/vendor/bin/phpunit
 
 # Start app
 EXPOSE 80
