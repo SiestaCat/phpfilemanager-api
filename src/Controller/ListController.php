@@ -19,13 +19,13 @@ class ListController extends ApiAbstractController
         $this->json_data['list'] = [];
         
         if(!$this->checkApiKey($request, Credentials::APIKEY_READONLY)) return $this->json_error_access_denied();
-
-        $this->json_data['next'] = $this->getNextPrevUrl($page, $page_limit, true);
-        $this->json_data['prev'] = $this->getNextPrevUrl($page, $page_limit, false);
-
+        
         try
         {
             $this->json_data['list'] = $fileManagerService->list($page, $page_limit);
+
+            $this->json_data['next'] = count($this->json_data['list']) > 0 ? $this->getNextPrevUrl($page, $page_limit, true) : null;
+            $this->json_data['prev'] = $this->getNextPrevUrl($page, $page_limit, false);
         }
         catch(\Exception $e)
         {
