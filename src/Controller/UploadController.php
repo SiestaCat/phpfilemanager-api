@@ -25,10 +25,13 @@ class UploadController extends ApiUploadAbstractController
          */
         $uploaded_files = $request->files;
 
+        
+
         if(count($uploaded_files) === 0) return $this->json_error_no_files_provided();
 
         foreach($uploaded_files as $upload_file)
         {
+            if(is_array($upload_file)) $upload_file = $upload_file[0];
             try
             {
                 $file = $fileManagerService->getFileCommander()->add($upload_file->getPathname());
