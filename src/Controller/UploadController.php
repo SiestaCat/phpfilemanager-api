@@ -17,6 +17,7 @@ class UploadController extends ApiUploadAbstractController
     {
 
         $this->json_data['files'] = [];
+        $this->json_data['files_hashes'] = [];
 
         if(!$this->checkApiKey($request, Credentials::APIKEY_WRITE)) return $this->json_error_access_denied();
 
@@ -33,6 +34,8 @@ class UploadController extends ApiUploadAbstractController
             try
             {
                 $file = $fileManagerService->getFileCommander()->add($upload_file->getPathname());
+
+                $this->json_data['files_hashes'][] = $file->getHash();
 
                 $this->json_data['files'][] = (object) [
                     'filename' => $upload_file->getClientOriginalName(),
